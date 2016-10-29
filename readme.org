@@ -1,0 +1,64 @@
+* Introduction
+
+=go-gh= provides some github conveniences at the command line for a
+single logged in users.
+
+** Installation
+
+#+BEGIN_SRC shell
+go get github.com/lcaballero/go-gh
+cd $GOPATH/src/github.com/lcaballero/go-gh
+go get ./...
+go install
+#+END_SRC
+
+These commands shold download the project, change directories into the
+new location, download it's dependencies and install it on the
+=GOPATH=.
+
+It's convenient to include =$GOPATH/bin/= on you =$PATH= variable so
+that once go install has ran you have access to the new executable.
+
+** Usage
+
+#+BEGIN_SRC shell
+Usage:
+  go-gh [OPTIONS] [owner] [repo] [organization]
+
+Application Options:
+      --token-file=   Name of the file containing the token. (default: ~/.go-gh-token)
+      --create-conf   Create bare-bones ~/.go-gh file with guesses for some values.
+      --conf-file=    Name of the file where default configuration is stored. (default: ~/.go-gh)
+      --base-url=     Base url to use for rest requests. (default: https://github.com/api/v3/)
+
+Help Options:
+  -h, --help          Show this help message
+#+END_SRC
+
+Take note of the two optional configuration files: =~/.go-gh-token=
+and =~/.go-gh=.  On eash execution the command will look for these
+files and if they exist use the values found in them.
+
+=~/.go-gh-token= should contain a [[https://help.github.com/articles/creating-an-access-token-for-command-line-use/][github token]].  While the =~/.go-gh=
+file can contain more custom configuration information.  For example:
+
+#+BEGIN_SRC ini
+[Active]
+Active = Work
+
+[Home]
+Username = <user-name>
+Token = <github-token>
+BaseUrl = https://github.com/api/v3/
+
+[Work]
+Username = <work-user>
+Token = <github-enteprise-token>
+BaseUrl = https://github.mycompany.com/api/v3/
+
+#+END_SRC
+
+*** License
+
+See License File.
+
