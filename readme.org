@@ -5,6 +5,8 @@
 <a href="https://godoc.org/github.com/lcaballero/go-gh">
    <img src="https://godoc.org/github.com/lcaballero/go-gh?status.svg" alt="GoDoc"/>
 </a>
+
+<img src="https://travis-ci.org/lcaballero/go-gh.svg?branch=master"/>
 #+END_HTML
 
 * Introduction

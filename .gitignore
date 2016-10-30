@@ -34,8 +34,4 @@ node_modules/
 .idea/
 pkg/
 bin/
-
-files/elasticsearch/
-src/tmp-*
-src/github.com/
-src/golang.org/
+readme.html
