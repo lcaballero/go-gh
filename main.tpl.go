@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-// GihubRunnable is a function that will issue github request and
+// GithubRunnable is a function that will issue github request and
 // will return the results or any errors that occurred.
 type GithubRunnable func(*conf.Config) (interface{}, error)
 
@@ -23,11 +23,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	MustShowJson(res)
+	MustShowJSON(res)
 }
 
 func run(c *conf.Config) (interface{}, error) {
-	var runner GithubRunnable = nil
+	var runner GithubRunnable
 	name := ""
 
 	if c.Fork.IsValid() {
@@ -69,8 +69,8 @@ func showPrivateRepos(api conf.ApiValues) {
 	}
 }
 
-func enterpriseUrl(baseUrl string) *url.URL {
-	url, err := url.Parse(baseUrl)
+func enterpriseURL(baseURL string) *url.URL {
+	url, err := url.Parse(baseURL)
 	if err != nil {
 		panic(err)
 	}
@@ -100,9 +100,9 @@ func listOrgs(c *conf.Config) (interface{}, error) {
 	return orgs, nil
 }
 
-// MustShowJson attempts to marshal the given value and panics
-// if an error occurs.
-func MustShowJson(e interface{}) {
+// MustShowJSON attempts to marshal the given value and panics if an error
+// occurs.
+func MustShowJSON(e interface{}) {
 	bin, err := json.MarshalIndent(e, "", "  ")
 	if err != nil {
 		panic(err)

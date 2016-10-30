@@ -1,3 +1,8 @@
+#+BEGIN_HTML
+<img src="https://goreportcard.com/badge/github.com/lcaballero/go-gh" 
+     tag="https://goreportcard.com/badge/github.com/lcaballero/go-gh" />
+#+END_HTML
+
 * Introduction
 
 =go-gh= provides some github conveniences at the command line for a
