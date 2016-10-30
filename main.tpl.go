@@ -9,7 +9,6 @@ import (
 	"golang.org/x/oauth2"
 	"net/url"
 	"os"
-	"github.com/lcaballero/griller/cmd"
 )
 
 type GithubRunnable func(*conf.Config) (interface{}, error)
@@ -17,6 +16,9 @@ type GithubRunnable func(*conf.Config) (interface{}, error)
 // https://github.com/blog/1509-personal-api-tokens
 func main() {
 	conf := cli.ParseArgs(os.Args[1:]...)
+
+	MustShowJson(conf)
+	os.Exit(1)
 
 	res, err := run(conf)
 	if err != nil {
@@ -35,7 +37,7 @@ func run(c *conf.Config) (interface{}, error) {
 	}
 	if c.PR.IsValid() {
 		name = c.PR.CmdName()
-		runner = CreatePR
+		runner = c.PR.CreatePR
 	}
 
 	if c.Organizations.IsValid() {
@@ -97,14 +99,9 @@ func showPublicRepos(api conf.ApiValues) {
 	}
 }
 
-func CreatePR(cf *conf.Config) (interface{}, error) {
-	return nil, nil
-}
-
 func ListOrgs(c *conf.Config) (interface{}, error) {
 	client := NewClient(c.Api.Current)
 
-//	username := c.Api.Current.Username
 	username := ""
 	orgs, _, err := client.Organizations.List(username, nil)
 	if err != nil {
