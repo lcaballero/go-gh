@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+// ParseArgs parses the command lines args (minus the first that is
+// the command go-gh itself).
 func ParseArgs(args ...string) *conf.Config {
 	cfg := &conf.Config{}
 	parser := flags.NewParser(cfg, flags.Default)
@@ -22,13 +24,13 @@ func ParseArgs(args ...string) *conf.Config {
 		BaseUrl: cfg.BaseUrl,
 	}
 
-	err = LoadToken(cfg)
+	err = loadToken(cfg)
 	if err != nil {
 		parser.WriteHelp(os.Stderr)
 		os.Exit(1)
 	}
 
-	err = ParseIni(cfg)
+	err = parseIni(cfg)
 	if os.IsNotExist(err) {
 		return cfg
 	}
@@ -42,7 +44,9 @@ func ParseArgs(args ...string) *conf.Config {
 	return cfg
 }
 
-func LoadToken(c *conf.Config) error {
+// loadToken attempts to find the .go-gh-token file (or it's equivalent)
+// and extract the token from within.
+func loadToken(c *conf.Config) error {
 	if c.TokenFile == "" {
 		return nil
 	}
@@ -66,7 +70,9 @@ func LoadToken(c *conf.Config) error {
 	return nil
 }
 
-func ParseIni(c *conf.Config) error {
+// ParseIni expands portions of the config by loading additional
+// configuration.
+func parseIni(c *conf.Config) error {
 	if c.ConfFile == "" {
 		return nil
 	}

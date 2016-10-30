@@ -11,14 +11,13 @@ import (
 	"os"
 )
 
+// GihubRunnable is a function that will issue github request and
+// will return the results or any errors that occurred.
 type GithubRunnable func(*conf.Config) (interface{}, error)
 
 // https://github.com/blog/1509-personal-api-tokens
 func main() {
 	conf := cli.ParseArgs(os.Args[1:]...)
-
-	MustShowJson(conf)
-	os.Exit(1)
 
 	res, err := run(conf)
 	if err != nil {
@@ -42,7 +41,7 @@ func run(c *conf.Config) (interface{}, error) {
 
 	if c.Organizations.IsValid() {
 		name = c.Organizations.CmdName()
-		runner = ListOrgs
+		runner = listOrgs
 	}
 
 	if runner != nil && name != "" {
@@ -70,7 +69,7 @@ func showPrivateRepos(api conf.ApiValues) {
 	}
 }
 
-func EnterpriseUrl(baseUrl string) *url.URL {
+func enterpriseUrl(baseUrl string) *url.URL {
 	url, err := url.Parse(baseUrl)
 	if err != nil {
 		panic(err)
@@ -78,17 +77,8 @@ func EnterpriseUrl(baseUrl string) *url.URL {
 	return url
 }
 
-func NewClient(api conf.ApiValues) *github.Client {
-	store := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: api.Token})
-	authClient := oauth2.NewClient(oauth2.NoContext, store)
-	client := github.NewClient(authClient)
-	//client.BaseURL = EnterpriseUrl(api.BaseUrl)
-
-	return client
-}
-
 func showPublicRepos(api conf.ApiValues) {
-	client := NewClient(api)
+	client := conf.NewClient(api)
 	repos, _, err := client.Repositories.List(api.Username, nil)
 	if err != nil {
 		panic(err)
@@ -99,8 +89,8 @@ func showPublicRepos(api conf.ApiValues) {
 	}
 }
 
-func ListOrgs(c *conf.Config) (interface{}, error) {
-	client := NewClient(c.Api.Current)
+func listOrgs(c *conf.Config) (interface{}, error) {
+	client := conf.NewClient(c.Api.Current)
 
 	username := ""
 	orgs, _, err := client.Organizations.List(username, nil)
@@ -110,6 +100,8 @@ func ListOrgs(c *conf.Config) (interface{}, error) {
 	return orgs, nil
 }
 
+// MustShowJson attempts to marshal the given value and panics
+// if an error occurs.
 func MustShowJson(e interface{}) {
 	bin, err := json.MarshalIndent(e, "", "  ")
 	if err != nil {
