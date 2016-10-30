@@ -40,7 +40,9 @@ and =~/.go-gh=.  On eash execution the command will look for these
 files and if they exist use the values found in them.
 
 =~/.go-gh-token= should contain a [[https://help.github.com/articles/creating-an-access-token-for-command-line-use/][github token]].  While the =~/.go-gh=
-file can contain more custom configuration information.  For example:
+file can contain more custom configuration information.  (Most tasks
+will required the token have the correct permissions set.)  For
+example:
 
 #+BEGIN_SRC ini
 [Active]
@@ -49,7 +51,7 @@ Active = Work
 [Home]
 Username = <user-name>
 Token = <github-token>
-BaseUrl = https://github.com/api/v3/
+BaseUrl = https://api.github.com/
 
 [Work]
 Username = <work-user>
@@ -62,3 +64,9 @@ BaseUrl = https://github.mycompany.com/api/v3/
 
 See License File.
 
+The use and distribution terms for this software are covered by the
+[[http://opensource.org/licenses/eclipse-1.0.txt][Eclipse Public License 1.0]], which can be found in the file ‘license’
+at the root of this distribution. By using this software in any
+fashion, you are agreeing to be bound by the terms of this
+license. You must not remove this notice, or any other, from this
+software.

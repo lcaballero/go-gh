@@ -5,16 +5,50 @@ import (
 	"fmt"
 	"github.com/google/go-github/github"
 	"github.com/lcaballero/go-gh/cli"
+	"github.com/lcaballero/go-gh/conf"
 	"golang.org/x/oauth2"
 	"net/url"
 	"os"
-	"github.com/lcaballero/go-gh/conf"
+	"github.com/lcaballero/griller/cmd"
 )
+
+type GithubRunnable func(*conf.Config) (interface{}, error)
 
 // https://github.com/blog/1509-personal-api-tokens
 func main() {
 	conf := cli.ParseArgs(os.Args[1:]...)
-	MustShowJson(conf)
+
+	res, err := run(conf)
+	if err != nil {
+		panic(err)
+	}
+	MustShowJson(res)
+}
+
+func run(c *conf.Config) (interface{}, error) {
+	var runner GithubRunnable = nil
+	name := ""
+
+	if c.Fork.IsValid() {
+		name = c.Fork.CmdName()
+		runner = c.Fork.CreateFork
+	}
+	if c.PR.IsValid() {
+		name = c.PR.CmdName()
+		runner = CreatePR
+	}
+
+	if c.Organizations.IsValid() {
+		name = c.Organizations.CmdName()
+		runner = ListOrgs
+	}
+
+	if runner != nil && name != "" {
+		fmt.Printf("running: %s\n", name)
+		return runner(c)
+	}
+
+	return nil, fmt.Errorf("coldn't find proper command to run")
 }
 
 func showPrivateRepos(api conf.ApiValues) {
@@ -34,8 +68,8 @@ func showPrivateRepos(api conf.ApiValues) {
 	}
 }
 
-func EnterpriseUrl(api conf.ApiValues) *url.URL {
-	url, err := url.Parse(api.BaseUrl)
+func EnterpriseUrl(baseUrl string) *url.URL {
+	url, err := url.Parse(baseUrl)
 	if err != nil {
 		panic(err)
 	}
@@ -46,7 +80,7 @@ func NewClient(api conf.ApiValues) *github.Client {
 	store := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: api.Token})
 	authClient := oauth2.NewClient(oauth2.NoContext, store)
 	client := github.NewClient(authClient)
-	client.BaseURL = EnterpriseUrl(api)
+	//client.BaseURL = EnterpriseUrl(api.BaseUrl)
 
 	return client
 }
@@ -63,15 +97,20 @@ func showPublicRepos(api conf.ApiValues) {
 	}
 }
 
-func createFork(cf *conf.Config) {
-	client := NewClient(cf.Api.Current)
-	owner, repo := cf.Action.Owner, cf.Action.Repo
-	newRepo, _, err := client.Repositories.CreateFork(owner, repo, nil)
-	if err != nil {
-		panic(err)
-	}
+func CreatePR(cf *conf.Config) (interface{}, error) {
+	return nil, nil
+}
 
-	MustShowJson(newRepo)
+func ListOrgs(c *conf.Config) (interface{}, error) {
+	client := NewClient(c.Api.Current)
+
+//	username := c.Api.Current.Username
+	username := ""
+	orgs, _, err := client.Organizations.List(username, nil)
+	if err != nil {
+		return nil, err
+	}
+	return orgs, nil
 }
 
 func MustShowJson(e interface{}) {

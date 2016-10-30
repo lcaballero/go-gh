@@ -5,9 +5,9 @@ import (
 	"github.com/go-ini/ini"
 	"github.com/jessevdk/go-flags"
 	"github.com/lcaballero/go-gh/conf"
+	"io/ioutil"
 	"os"
 	"strings"
-	"io/ioutil"
 )
 
 func ParseArgs(args ...string) *conf.Config {
@@ -15,9 +15,9 @@ func ParseArgs(args ...string) *conf.Config {
 	parser := flags.NewParser(cfg, flags.Default)
 	_, err := parser.ParseArgs(args)
 	if err != nil {
-		parser.WriteHelp(os.Stderr)
 		os.Exit(1)
 	}
+
 	cfg.Api.Current = conf.ApiValues{
 		BaseUrl: cfg.BaseUrl,
 	}
@@ -38,6 +38,7 @@ func ParseArgs(args ...string) *conf.Config {
 		parser.WriteHelp(os.Stderr)
 		os.Exit(1)
 	}
+
 	return cfg
 }
 
@@ -98,6 +99,8 @@ func ParseIni(c *conf.Config) error {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	c.Api.Active = active
 
 	return nil
 }
