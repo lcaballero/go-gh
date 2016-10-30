@@ -23,16 +23,22 @@ that once go install has ran you have access to the new executable.
 
 #+BEGIN_SRC shell
 Usage:
-  go-gh [OPTIONS] [owner] [repo] [organization]
+  go-gh [OPTIONS] <fork | orgs | pr>
 
 Application Options:
-      --token-file=   Name of the file containing the token. (default: ~/.go-gh-token)
-      --create-conf   Create bare-bones ~/.go-gh file with guesses for some values.
-      --conf-file=    Name of the file where default configuration is stored. (default: ~/.go-gh)
-      --base-url=     Base url to use for rest requests. (default: https://github.com/api/v3/)
+      --token-file=  Name of the file containing the token. (default: ~/.go-gh-token)
+      --create-conf  Create bare-bones ~/.go-gh file with guesses for some values.
+      --conf-file=   Name of the file where default configuration is stored. (default: ~/.go-gh)
+      --base-url=    Base url to use for rest requests. (default: https://github.com/api/v3/)
 
 Help Options:
-  -h, --help          Show this help message
+  -h, --help         Show this help message
+
+Available commands:
+  fork
+  orgs
+  pr
+
 #+END_SRC
 
 Take note of the two optional configuration files: =~/.go-gh-token=
