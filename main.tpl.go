@@ -7,7 +7,6 @@ import (
 	"github.com/lcaballero/go-gh/cli"
 	"github.com/lcaballero/go-gh/conf"
 	"golang.org/x/oauth2"
-	"net/url"
 	"os"
 )
 
@@ -18,6 +17,11 @@ type GithubRunnable func(*conf.Config) (interface{}, error)
 // https://github.com/blog/1509-personal-api-tokens
 func main() {
 	conf := cli.ParseArgs(os.Args[1:]...)
+
+	if conf.ShowValues {
+		MustShowJSON(conf)
+		return
+	}
 
 	res, err := run(conf)
 	if err != nil {
@@ -67,14 +71,6 @@ func showPrivateRepos(api conf.ApiValues) {
 	for _, r := range repos {
 		fmt.Println(*r.Name)
 	}
-}
-
-func enterpriseURL(baseURL string) *url.URL {
-	url, err := url.Parse(baseURL)
-	if err != nil {
-		panic(err)
-	}
-	return url
 }
 
 func showPublicRepos(api conf.ApiValues) {

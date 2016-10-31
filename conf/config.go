@@ -3,6 +3,7 @@ package conf
 // Config represents the structure parsed from the command line
 // dictating the required structure/flags.
 type Config struct {
+	ShowValues    bool   `long:"show-values" description:"Show all values as parsed from command lines and conf files."`
 	TokenFile     string `long:"token-file" description:"Name of the file containing the token." default:"~/.go-gh-token"`
 	CreateConf    bool   `long:"create-conf" description:"Create bare-bones ~/.go-gh file with guesses for some values."`
 	Api           Api    `hidden:"true"`
