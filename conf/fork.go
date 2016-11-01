@@ -1,5 +1,7 @@
 package conf
 
+import "fmt"
+
 // Fork holds the required and optional parameters for issuing a Fork
 // request to the github api.
 type Fork struct {
@@ -20,8 +22,9 @@ func (f Fork) IsValid() bool {
 
 // CreateFork issues the create fork request to github api.
 func (f Fork) CreateFork(cf *Config) (interface{}, error) {
-
-	//TODO: check again for command validity.
+	if f.IsValid() {
+		return nil, fmt.Errorf("fork doesn't have required parameters")
+	}
 
 	client := NewClient(cf.Api.Current)
 	owner, repo := f.Owner, f.Repo
