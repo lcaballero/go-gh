@@ -4,8 +4,9 @@ go:
    - 1.6
 
 install:
-- go get golang.org/x/tools/cmd/cover
 - export PATH=$PATH:$HOME/gopath/bin
 - go get github.com/lcaballero/go-gh/./...
 - go install github.com/lcaballero/go-gh
+- go install github.com/lcaballero/exam
+
 script: go test --race ./...
