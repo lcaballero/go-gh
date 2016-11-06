@@ -6,7 +6,8 @@ go:
 install:
 - export PATH=$PATH:$HOME/gopath/bin
 - go get github.com/lcaballero/go-gh/./...
+- go get github.com/lcaballero/exam
 - go install github.com/lcaballero/go-gh
-- go install github.com/lcaballero/exam
+
 
 script: go test --race ./...
