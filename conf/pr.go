@@ -1,6 +1,9 @@
 package conf
 
-import "github.com/google/go-github/github"
+import (
+	"github.com/google/go-github/github"
+	"golang.org/x/net/context"
+)
 
 // PR contains the parameters required for a PR POST.
 //
@@ -39,7 +42,8 @@ func (p PR) CreatePR(cf *Config) (interface{}, error) {
 		Body:  &p.Body,
 	}
 
-	req, _, err := client.PullRequests.Create(owner, repo, pr)
+	ctx := context.Background()
+	req, _, err := client.PullRequests.Create(ctx, owner, repo, pr)
 	if err != nil {
 		return nil, err
 	}

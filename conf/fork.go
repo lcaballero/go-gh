@@ -1,6 +1,9 @@
 package conf
 
-import "fmt"
+import (
+	"fmt"
+	"golang.org/x/net/context"
+)
 
 // Fork holds the required and optional parameters for issuing a Fork
 // request to the github api.
@@ -29,7 +32,8 @@ func (f Fork) CreateFork(cf *Config) (interface{}, error) {
 	client := NewClient(cf.Api.Current)
 	owner, repo := f.Owner, f.Repo
 
-	newRepo, _, err := client.Repositories.CreateFork(owner, repo, nil)
+	ctx := context.Background()
+	newRepo, _, err := client.Repositories.CreateFork(ctx, owner, repo, nil)
 	if err != nil {
 		return nil, err
 	}

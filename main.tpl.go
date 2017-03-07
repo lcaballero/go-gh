@@ -8,6 +8,7 @@ import (
 	"github.com/lcaballero/go-gh/conf"
 	"golang.org/x/oauth2"
 	"os"
+	"golang.org/x/net/context"
 )
 
 // GithubRunnable is a function that will issue github request and
@@ -60,8 +61,9 @@ func showPrivateRepos(api conf.ApiValues) {
 	store := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: api.Token})
 	authClient := oauth2.NewClient(oauth2.NoContext, store)
 	client := github.NewClient(authClient)
+	ctx := context.Background()
 
-	repos, _, err := client.Repositories.List(api.Username, &github.RepositoryListOptions{
+	repos, _, err := client.Repositories.List(ctx, api.Username, &github.RepositoryListOptions{
 		Type: "private",
 	})
 	if err != nil {
@@ -75,7 +77,9 @@ func showPrivateRepos(api conf.ApiValues) {
 
 func showPublicRepos(api conf.ApiValues) {
 	client := conf.NewClient(api)
-	repos, _, err := client.Repositories.List(api.Username, nil)
+	ctx := context.Background()
+
+	repos, _, err := client.Repositories.List(ctx, api.Username, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -87,9 +91,10 @@ func showPublicRepos(api conf.ApiValues) {
 
 func listOrgs(c *conf.Config) (interface{}, error) {
 	client := conf.NewClient(c.Api.Current)
+	ctx := context.Background()
 
 	username := ""
-	orgs, _, err := client.Organizations.List(username, nil)
+	orgs, _, err := client.Organizations.List(ctx, username, nil)
 	if err != nil {
 		return nil, err
 	}
