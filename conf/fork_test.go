@@ -1,8 +1,8 @@
 package conf
 
 import (
-	"testing"
 	. "github.com/lcaballero/exam/assert"
+	"testing"
 )
 
 func Test_Fork_003(t *testing.T) {

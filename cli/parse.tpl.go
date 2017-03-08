@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 	"github.com/go-ini/ini"
-	"github.com/jessevdk/go-flags"
+	cmd "github.com/codegangsta/cli"
 	"github.com/lcaballero/go-gh/conf"
 	"io/ioutil"
 	"os"
@@ -30,7 +30,7 @@ func ParseArgs(args ...string) *conf.Config {
 		os.Exit(1)
 	}
 
-	err = parseIni(cfg)
+	err = updateFromIni(cfg)
 	if os.IsNotExist(err) {
 		return cfg
 	}
@@ -70,12 +70,13 @@ func loadToken(c *conf.Config) error {
 	return nil
 }
 
-// ParseIni expands portions of the config by loading additional
+// updateFromIni expands portions of the config by loading additional
 // configuration.
-func parseIni(c *conf.Config) error {
+func updateFromIni(c *conf.Config) error {
 	if c.ConfFile == "" {
 		return nil
 	}
+
 	home := os.Getenv("HOME")
 	file := strings.Replace(c.ConfFile, "~", home, 1)
 

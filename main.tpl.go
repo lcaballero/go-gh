@@ -1,14 +1,14 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/google/go-github/github"
 	"github.com/lcaballero/go-gh/cli"
 	"github.com/lcaballero/go-gh/conf"
+	. "github.com/lcaballero/go-gh/shared"
+	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"os"
-	"golang.org/x/net/context"
 )
 
 // GithubRunnable is a function that will issue github request and
@@ -17,6 +17,13 @@ type GithubRunnable func(*conf.Config) (interface{}, error)
 
 // https://github.com/blog/1509-personal-api-tokens
 func main() {
+	err := cli.ToApp().Run(os.Args)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func other() {
 	conf := cli.ParseArgs(os.Args[1:]...)
 
 	if conf.ShowValues {
@@ -28,12 +35,37 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	MustShowJSON(res)
+
+	if res != nil {
+		MustShowJSON(res)
+	}
 }
 
 func run(c *conf.Config) (interface{}, error) {
 	var runner GithubRunnable
+	var interactive GithubRunnable
 	name := ""
+
+	if c.IsUsingConventions {
+		pr, gist, err := c.PR.ApplyConventions()
+		if err != nil {
+			panic(err)
+		}
+		c.PR = pr
+
+		if !c.PR.ShowJson {
+			MustShowJSON(c.PR)
+		}
+
+		if !c.PR.ShowHint {
+			fmt.Println(gist)
+		}
+
+		fmt.Print("Continue? [y/n]: ")
+		if !askForConfirmation() {
+			return nil, nil
+		}
+	}
 
 	if c.Fork.IsValid() {
 		name = c.Fork.CmdName()
@@ -42,6 +74,7 @@ func run(c *conf.Config) (interface{}, error) {
 	if c.PR.IsValid() {
 		name = c.PR.CmdName()
 		runner = c.PR.CreatePR
+		interactive = c.PR.RunInteractive
 	}
 
 	if c.Organizations.IsValid() {
@@ -49,12 +82,16 @@ func run(c *conf.Config) (interface{}, error) {
 		runner = listOrgs
 	}
 
+	if interactive != nil && name != "" {
+		return interactive(c)
+	}
+
 	if runner != nil && name != "" {
 		fmt.Printf("running: %s\n", name)
 		return runner(c)
 	}
 
-	return nil, fmt.Errorf("coldn't find proper command to run")
+	return nil, fmt.Errorf("couldn't find proper command to run")
 }
 
 func showPrivateRepos(api conf.ApiValues) {
@@ -99,14 +136,4 @@ func listOrgs(c *conf.Config) (interface{}, error) {
 		return nil, err
 	}
 	return orgs, nil
-}
-
-// MustShowJSON attempts to marshal the given value and panics if an error
-// occurs.
-func MustShowJSON(e interface{}) {
-	bin, err := json.MarshalIndent(e, "", "  ")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(bin))
 }
