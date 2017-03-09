@@ -1,26 +1,34 @@
 package conf
 
-import (
-	"github.com/google/go-github/github"
-	"golang.org/x/oauth2"
-	"net/url"
-)
-
-func enterpriseURL(baseURL string) *url.URL {
-	url, err := url.Parse(baseURL)
-	if err != nil {
-		panic(err)
-	}
-	return url
+// Base represents the structure parsed from the command line
+// dictating the required structure/flags.
+type Base struct {
+	TokenFile          string
+	ConfFile           string
+	BaseUrl            string
+	CreateConf         bool
+	ShowValues         bool
+	IsUsingConventions bool
 }
 
-// NewClient creates and returns an oauth2 github client based on the
-// values provided.
-func NewClient(api ApiValues) *github.Client {
-	//TODO: check that api.Token is non-nil
-	store := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: api.Token})
-	authClient := oauth2.NewClient(oauth2.NoContext, store)
-	client := github.NewClient(authClient)
-	client.BaseURL = enterpriseURL(api.BaseUrl)
-	return client
+// Conf holds all the
+type Conf struct {
+	Base   Base
+	Locals Locals
+	PR     PR
+	Orgs   Orgs
+	Fork   Fork
+}
+
+// Locals holds the configured values for reaching the github api.
+type Locals struct {
+	Active  string
+	Current Values
+}
+
+// Values hold configured values required for connecting to the github api.
+type Values struct {
+	Token    string
+	BaseUrl  string
+	Username string
 }

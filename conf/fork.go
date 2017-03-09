@@ -1,21 +1,16 @@
 package conf
 
 import (
-	"fmt"
 	"golang.org/x/net/context"
+	"fmt"
 )
 
 // Fork holds the required and optional parameters for issuing a Fork
 // request to the github api.
 type Fork struct {
-	Owner        string `long:"owner" short:"o" description:"Owner of the branch to fork" required:"1"`
-	Repo         string `long:"repo" short:"r" description:"Name of the repo to fork" required:"2"`
-	Organization string `long:"org" description:"Name of the organization to fork into"`
-}
-
-// CmdName simply returns "fork".
-func (f Fork) CmdName() string {
-	return "fork"
+	Owner        string
+	Repo         string
+	Organization string
 }
 
 // IsValid checks that the required parameters are non-empty strings.
@@ -24,12 +19,12 @@ func (f Fork) IsValid() bool {
 }
 
 // CreateFork issues the create fork request to github api.
-func (f Fork) CreateFork(cf *Config) (interface{}, error) {
+func (f Fork) CreateFork(cf Locals) (interface{}, error) {
 	if f.IsValid() {
 		return nil, fmt.Errorf("fork doesn't have required parameters")
 	}
 
-	client := NewClient(cf.Api.Current)
+	client := NewClient(cf.Current)
 	owner, repo := f.Owner, f.Repo
 
 	ctx := context.Background()
