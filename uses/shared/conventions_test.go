@@ -1,4 +1,4 @@
-package conf
+package shared
 
 import (
 	"github.com/stretchr/testify/assert"

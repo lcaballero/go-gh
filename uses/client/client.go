@@ -4,6 +4,7 @@ import (
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 	"net/url"
+	"github.com/lcaballero/go-gh/conf"
 )
 
 func enterpriseURL(baseURL string) *url.URL {
@@ -16,7 +17,7 @@ func enterpriseURL(baseURL string) *url.URL {
 
 // NewClient creates and returns an oauth2 github client based on the
 // values provided.
-func NewClient(api Values) *github.Client {
+func NewClient(api conf.Values) *github.Client {
 	//TODO: check that api.Token is non-nil
 	store := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: api.Token})
 	authClient := oauth2.NewClient(oauth2.NoContext, store)

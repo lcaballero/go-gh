@@ -8,6 +8,7 @@ import (
 	gh "github.com/lcaballero/go-gh/uses/client"
 	"golang.org/x/net/context"
 	"os"
+	"github.com/lcaballero/go-gh/uses/shared"
 )
 
 type PrRequest struct {
@@ -21,7 +22,7 @@ func (r PrRequest) IsValid() bool {
 
 // ApplyConventions
 func (r PrRequest) ApplyConventions() (conf.PR, string, error) {
-	org, repo, err := conf.CwdConventions(os.Getwd)
+	org, repo, err := shared.CwdConventions(os.Getwd)
 	if err != nil {
 		return r.Pr, "", err
 	}
