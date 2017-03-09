@@ -1,8 +1,8 @@
 package conf
 
 import (
-	"golang.org/x/net/context"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // Fork holds the required and optional parameters for issuing a Fork

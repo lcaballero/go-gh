@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/lcaballero/go-gh/cli"
 	"github.com/lcaballero/go-gh/conf"
-	"golang.org/x/net/context"
 	cmd "gopkg.in/urfave/cli.v2"
 	"os"
 )
@@ -69,16 +68,3 @@ func main() {
 		panic(err)
 	}
 }
-
-//
-//func listOrgs(c *conf.Base) (interface{}, error) {
-//	client := conf.NewClient(c.Api.Current)
-//	ctx := context.Background()
-//
-//	username := ""
-//	orgs, _, err := client.Organizations.List(ctx, username, nil)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return orgs, nil
-//}

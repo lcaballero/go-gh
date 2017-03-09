@@ -8,7 +8,6 @@ import (
 	"golang.org/x/oauth2"
 )
 
-
 func ShowPrivateRepos(locals conf.Locals) {
 	api := locals.Current
 	store := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: api.Token})
@@ -27,4 +26,3 @@ func ShowPrivateRepos(locals conf.Locals) {
 		fmt.Println(*r.Name)
 	}
 }
-
