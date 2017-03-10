@@ -97,12 +97,12 @@ func (r *PrRequest) Gist() string {
 }
 
 // CreatePR issues the post for the command and parameters.
-func (r *PrRequest) CreatePR(cf conf.Locals) (interface{}, error) {
+func (r *PrRequest) CreatePR() (interface{}, error) {
 	if !r.IsValid() {
 		return nil, errors.New("could not validate the request propertly")
 	}
 
-	client := gh.NewClient(cf.Current)
+	client := gh.NewClient(r.Locals.Current)
 
 	pr := &github.NewPullRequest{
 		Title: &r.Pr.Title,

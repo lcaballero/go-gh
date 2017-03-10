@@ -47,6 +47,8 @@ func main() {
 			fmt.Println(req.Gist())
 			fmt.Println("is valid:", req.IsValid())
 
+			req.CreatePR()
+
 			return nil
 		},
 	}
