@@ -6,6 +6,7 @@ import (
 	pr_req "github.com/lcaballero/go-gh/uses/pr"
 	cmd "gopkg.in/urfave/cli.v2"
 	"os"
+	"encoding/json"
 )
 
 // https://github.com/blog/1509-personal-api-tokens
@@ -47,7 +48,18 @@ func main() {
 			fmt.Println(req.Gist())
 			fmt.Println("is valid:", req.IsValid())
 
-			req.CreatePR()
+			res, err := req.CreatePR()
+			if err != nil {
+				return err
+			}
+
+			bin, err := json.MarshalIndent(res, "", "  ")
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			fmt.Println("result:")
+			fmt.Println(string(bin))
 
 			return nil
 		},
