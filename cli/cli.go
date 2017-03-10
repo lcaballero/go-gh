@@ -5,7 +5,6 @@ import (
 )
 
 type Processing struct {
-	BeforeAction cli.BeforeFunc
 	BaseAction   cli.ActionFunc
 	OrgAction    cli.ActionFunc
 	ForkAction   cli.ActionFunc
@@ -17,7 +16,6 @@ func New(proc Processing) *cli.App {
 		Name:    "go-gh",
 		Version: "0.0.1",
 		Usage:   "A CLI to interface with github from inside a repository directory",
-		Before:  proc.BeforeAction,
 		Action:  proc.BaseAction,
 		Flags:   BaseFlags(),
 		Commands: []*cli.Command{
@@ -101,23 +99,20 @@ func PrCommand(action cli.ActionFunc) *cli.Command {
 				Usage: "A ticket number associated with the PR.",
 			},
 			&cli.StringFlag{
-				Name:  "branch",
+				Name:  "current-branch",
 				Usage: "Current branch -- until this can be derived via git command line tool.",
 			},
 			&cli.BoolFlag{
 				Name:  "show-hint",
 				Usage: "Hide the display of the gist, which shows source-branch into dest-branch text.",
-				Value: true,
 			},
 			&cli.BoolFlag{
 				Name:  "show-json",
 				Usage: "Hides the json post content.",
-				Value: true,
 			},
 			&cli.BoolFlag{
 				Name:  "show-summary",
 				Usage: "Show non-json human readable summary.",
-				Value: true,
 			},
 			&cli.BoolFlag{
 				Name:  "verbose",
@@ -157,7 +152,7 @@ func BaseFlags() []cli.Flag {
 			Value: "https://api.github.com/",
 		},
 		&cli.BoolFlag{
-			Name:  "conv",
+			Name:  "using-convention",
 			Usage: "Use PWD conventions from /[git.host]/[organization]/[repo] to populate parameters.",
 		},
 	}

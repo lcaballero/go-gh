@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-const GO_GH = ".go-gh"
-const GO_GH_TOKEN = ".go-gh-token"
+const GO_GH = "~/.go-gh"
+const GO_GH_TOKEN = "~/.go-gh-token"
 
 // Loader loads either the Token file (~/.go-gh-token) or the resources
 // file (~/.go-gh).
@@ -33,7 +33,7 @@ func NewLoader() Loader {
 // and extract the token from within.
 func (d Loader) LoadToken(file string) (string, error) {
 	if file == "" {
-		file = d.FileProvider(GO_GH)
+		file = d.FileProvider(GO_GH_TOKEN)
 	}
 
 	info, err := os.Stat(file)
@@ -56,11 +56,11 @@ func (d Loader) LoadToken(file string) (string, error) {
 
 // UpdateFromIni expands portions of the config by loading additional
 // configuration.
-func (d Loader) UpdateFromIni(file string) (conf.Locals, error) {
+func (d Loader) LoadLocals(file string) (conf.Locals, error) {
 	locals := conf.Locals{}
 
 	if file == "" {
-		file = d.FileProvider(GO_GH_TOKEN)
+		file = d.FileProvider(GO_GH)
 	}
 
 	info, err := os.Stat(file)

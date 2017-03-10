@@ -2,9 +2,9 @@ package client
 
 import (
 	"github.com/google/go-github/github"
+	"github.com/lcaballero/go-gh/conf"
 	"golang.org/x/oauth2"
 	"net/url"
-	"github.com/lcaballero/go-gh/conf"
 )
 
 func enterpriseURL(baseURL string) *url.URL {

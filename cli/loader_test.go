@@ -13,7 +13,7 @@ func Test_Load_Token(t *testing.T) {
 }
 
 func Test_Update_From_Ini(t *testing.T) {
-	locals, err := NewLoader().UpdateFromIni("./.files/.go-gh")
+	locals, err := NewLoader().LoadLocals("./.files/.go-gh")
 
 	assert.Nil(t, err)
 	assert.Equal(t, "Work", locals.Active)

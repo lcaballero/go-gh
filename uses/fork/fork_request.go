@@ -2,9 +2,9 @@ package fork
 
 import (
 	"fmt"
-	"golang.org/x/net/context"
-	gh "github.com/lcaballero/go-gh/uses/client"
 	"github.com/lcaballero/go-gh/conf"
+	gh "github.com/lcaballero/go-gh/uses/client"
+	"golang.org/x/net/context"
 )
 
 type ForkRequest struct {
@@ -32,4 +32,3 @@ func (f ForkRequest) CreateFork(cf conf.Locals) (interface{}, error) {
 	}
 	return newRepo, nil
 }
-

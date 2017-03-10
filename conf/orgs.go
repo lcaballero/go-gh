@@ -9,3 +9,10 @@ type Orgs struct {
 func (g Orgs) IsValid() bool {
 	return g.List
 }
+
+func LoadOrgs(ctx ValueContext) Orgs {
+	c := ContextLoader{ctx}
+	orgs := Orgs{}
+	c.Bool("list", &orgs.List)
+	return orgs
+}
