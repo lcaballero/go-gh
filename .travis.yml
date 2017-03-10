@@ -7,6 +7,7 @@ install:
 - export PATH=$PATH:$HOME/gopath/bin
 - go get github.com/lcaballero/go-gh/./...
 - go get github.com/lcaballero/exam
+- go get github.com/stretchr/testify/assert
 - go install github.com/lcaballero/go-gh
 
 

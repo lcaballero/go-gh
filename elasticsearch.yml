@@ -1,0 +1,54 @@
+
+
+
+
+action.auto_create_index: 'true'
+bootstrap.mlockall: 'true'
+cluster.name: logrhythm_240
+cluster.routing.allocation.node_concurrent_recoveries: '2'
+cluster.routing.allocation.node_initial_primaries_recoveries: '6'
+cluster.routing.allocation.disk.threshold_enabled: 'false'
+discovery.zen.minimum_master_nodes: '1'
+discovery.zen.ping.multicast.enabled: 'false'
+discovery.zen.ping.timeout: 30s
+discovery.zen.ping.unicast.hosts: 10.1.4.240
+index.cache.field.type: soft
+index.indexing.slowlog.threshold.index.warn: 20s
+index.mapper.dynamic: 'true'
+index.merge.policy.max_merge_at_once: '10'
+index.merge.policy.max_merge_at_once_explicit: '30'
+index.merge.policy.max_merged_segment: 2gb
+index.merge.scheduler.max_thread_count: '6'
+index.number_of_replicas: '0'
+index.number_of_shards: '2'
+index.percolator.map_unmapped_fields_as_string: 'true'
+index.search.slowlog.threshold.fetch.warn: 5s
+index.search.slowlog.threshold.query.warn: 20s
+index.translog.flush_threshold_ops: '200000'
+index.warmer.enabled: 'false'
+indices.breaker.fielddata.limit: 10%
+indices.cache.filter.size: 8%
+indices.fielddata.breaker.limit: 60%
+indices.fielddata.cache.size: 10%
+indices.memory.index_buffer_size: 12%
+indices.recovery.max_bytes_per_sec: 50mb
+indices.recovery.concurrent_streams: '3'
+indices.store.throttle.type: none
+indices.store.throttle.max_bytes_per_sec: 20mb
+network.host: 0.0.0.0
+node.data: 'true'
+node.master: 'true'
+node.max_local_storage_nodes: '1'
+node.name: ${VIRTUAL_HOSTNAME}
+path.conf: /etc/elasticsearch
+path.data: /usr/local/logrhythm/db/elasticsearch/data
+path.logs: /var/log/elasticsearch
+threadpool.bulk.queue_size: '2000'
+threadpool.bulk.size: '20'
+threadpool.bulk.type: fixed
+threadpool.index.queue_size: '40000'
+threadpool.index.size: '30'
+threadpool.index.type: fixed
+threadpool.search.queue_size: '1000'
+threadpool.search.size: '16'
+threadpool.search.type: fixed
