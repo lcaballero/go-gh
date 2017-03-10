@@ -1,0 +1,11 @@
+Active = Work
+
+[Work]
+Token = 1221212312312314121211231423425312341242
+BaseUrl = https://github.schq.secious.com/api/v3/
+Username = Lucas-Caballero
+
+[Home]
+Token = 0102901930192190238901871923741092387410
+BaseUrl = https://api.github.com/
+Username = lcaballero
